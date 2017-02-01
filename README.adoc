@@ -21,17 +21,20 @@ Python 部分暂时只支持 Python 3
 配置文件以 yaml 格式书写，顶层内容必须是一个 dict（或者为空），不能是 list 或其他类型。
 
 在用 custom_values 覆盖 defaults 时，对于 dict 类型的内容会递归覆盖。
+[source,yaml]
 ----
 person:
     name: abc
     age: 0
 ----
 和
+[source,yaml]
 ----
 person:
     age: 100
 ----
 会被和并成：
+[source,yaml]
 ----
 person:
     name: abc
@@ -39,6 +42,7 @@ person:
 ----
 
 在 defaults 里，可以使用 !need tag 来标记必填配置项，这些配置项没有默认值，必须通过 custom_values 进行赋值。
+[source,yaml]
 ----
 config_a: !need
 
@@ -52,7 +56,8 @@ person:
 
 
 = 使用方式（以 Python 版本为例）
-```
+[source,python]
+----
 config = read_config(defaults_path, custom_values_path)  # 若所有配置项都有默认值，可以不传入 custom_values_path
 
 # 一次性读取多组配置文件，将它们的解析结果合并成一个 dict 统一返回
@@ -65,4 +70,4 @@ config = batch_read_config([
 # 以上两个函数返回的是 object dict，用 "[]" 和 "." 号均可读取，便于读取多层级的配置值。
 print(config.a.b.c)
 print(config["a"]["b"]["c"])
-```
+----
