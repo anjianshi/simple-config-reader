@@ -1,10 +1,10 @@
 {
   "name": "hg-config-reader",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "一个用于 huoguan.net 下各项目的简单的配置文件读取工具",
   "main": "index.js",
   "files": [
-    "index.js"
+    "index.js", "utils.js", "schemas.js"
   ],
   "author": "anjianshi",
   "license": "MIT",
