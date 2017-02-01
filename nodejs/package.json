@@ -1,0 +1,23 @@
+{
+  "name": "hg-config-reader",
+  "version": "0.0.1",
+  "description": "一个用于 huoguan.net 下各项目的简单的配置文件读取工具",
+  "main": "index.js",
+  "files": [
+    "index.js"
+  ],
+  "author": "anjianshi",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:anjianshi/hg-config-reader.git"
+  },
+  "dependencies": {
+    "js-yaml": "^3.7.0",
+    "lodash": "^4.17.4"
+  },
+  "keywords": [
+    "yaml",
+    "config"
+  ]
+}
