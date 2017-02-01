@@ -1,0 +1,68 @@
+一个用于 huoguan.net 下各项目的简单的配置文件读取工具 +
+此工具有 Python 和 Node.js 两种实现，用来在不同类型的项目中使用（可以实现多个不同类型的项目读取同一份配置文件），均支持相同的配置文件格式。
+
+Python 部分暂时只支持 Python 3
+
+
+= 配置文件结构
+
+此工具支持通过两个文件来完成对配置项的定义和赋值： +
+* 一个 `defaults` 文件，定义配置项列表，并设置各配置项的默认值；
+* 一个 `custom_values` 文件，它会覆盖 `defaults` 里定义的默认值。
+  我们可以为不同的运行环境（如开发、生产环境）分别定义一个 `custom_values` 文件，以实现在不同环境下使用不同的配置值。
+
+一般我们的项目里应把 `defaults` 文件纳入版本管理，将 `custom_values` 排除在外（例如把它列入 .gitignore）。 +
+把 `defaults` 纳入版本管理，便于查看我们的项目对配置项的需求的变化情况。 +
+而 `custom_values` 因为可能会涉及一些敏感内容（如密码），不宜加入代码仓库； +
+并且它的内容本身也不属于业务逻辑的一部分（它的内容的变化对应的是运行环境的变化而不是代表业务逻辑的变化。这点 `defaults` 就不同，它的变化总是意味着我们对业务逻辑的设计有了变化），也没有纳入管理的必要。
+
+
+= 配置文件格式
+配置文件以 yaml 格式书写，顶层内容必须是一个 dict（或者为空），不能是 list 或其他类型。
+
+在用 custom_values 覆盖 defaults 时，对于 dict 类型的内容会递归覆盖。
+----
+person:
+    name: abc
+    age: 0
+----
+和
+----
+person:
+    age: 100
+----
+会被和并成：
+----
+person:
+    name: abc
+    age: 100
+----
+
+在 defaults 里，可以使用 !need tag 来标记必填配置项，这些配置项没有默认值，必须通过 custom_values 进行赋值。
+----
+config_a: !need
+
+person:
+    name: abc
+    age: !need
+----
+此时如果 custom_values 里没有指定 config_a 和 person.age 的值，就会报错。
+
+如果 defaults 里没有定义任何“必填项”，且当前运行环境下也没有需要自定义的值，也可以省略 custom_values，只读取 defaults。
+
+
+= 使用方式（以 Python 版本为例）
+```
+config = read_config(defaults_path, custom_values_path)  # 若所有配置项都有默认值，可以不传入 custom_values_path
+
+# 一次性读取多组配置文件，将它们的解析结果合并成一个 dict 统一返回
+# 各组配置间不允许出现同名的配置项
+config = batch_read_config([
+    (defaults_path, custom_values_path),
+    defaults_path     # 若所有配置项都有默认值，可以不提供 custom_values_path
+])
+
+# 以上两个函数返回的是 object dict，用 "[]" 和 "." 号均可读取，便于读取多层级的配置值。
+print(config.a.b.c)
+print(config["a"]["b"]["c"])
+```
