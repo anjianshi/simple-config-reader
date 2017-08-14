@@ -1,7 +1,7 @@
 {
-  "name": "hg-config-reader",
+  "name": "simple-config-reader",
   "version": "0.0.2",
-  "description": "一个用于 huoguan.net 下各项目的简单的配置文件读取工具",
+  "description": "一个简单的配置文件读取工具",
   "main": "index.js",
   "files": [
     "index.js", "utils.js", "schemas.js"
@@ -10,7 +10,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git@github.com:anjianshi/hg-config-reader.git"
+    "url": "git@github.com:anjianshi/simple-config-reader.git"
   },
   "dependencies": {
     "js-yaml": "^3.7.0",
