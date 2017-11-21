@@ -8,7 +8,7 @@ Python 部分暂时只支持 Python 3
 
 此工具支持通过两个文件来完成对配置项的定义和赋值： +
 * 一个 `defaults` 文件，定义配置项列表，并设置各配置项的默认值；
-* 一个 `custom_values` 文件，它会覆盖 `defaults` 里定义的默认值。
+* 一个可选的 `custom_values` 文件，它会覆盖 `defaults` 里定义的默认值。
   我们可以为不同的运行环境（如开发、生产环境）分别定义一个 `custom_values` 文件，以实现在不同环境下使用不同的配置值。
 
 一般我们的项目里应把 `defaults` 文件纳入版本管理，将 `custom_values` 排除在外（例如把它列入 .gitignore）。 +
@@ -52,7 +52,7 @@ person:
 ----
 此时如果 custom_values 里没有指定 config_a 和 person.age 的值，就会报错。
 
-如果 defaults 里没有定义任何“必填项”，且当前运行环境下也没有需要自定义的值，也可以省略 custom_values，只读取 defaults。
+如果 defaults 里没有定义任何“必填项”，且当前运行环境下也没有需要自定义的值，可以省略 custom_values，只读取 defaults。
 
 
 = 使用方式（以 Python 版本为例）
