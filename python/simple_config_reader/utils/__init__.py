@@ -46,6 +46,9 @@ class ObjectDict(dict):
     def __setattr__(self, name, value):
         self[name] = value
 
+    def __delattr__(self, name):
+        del self[name]
+
 
 def recursive_object_dict(orig_dict):
     """将 dict 递归转换成 ObjectDict，即下级的所有 dict 也都转换成 ObjectDict）"""
