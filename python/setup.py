@@ -7,7 +7,7 @@ except ImportError:
 
 setup(
     name='simple-config-reader',
-    version='0.0.2',
+    version='0.0.5',
     url='https://github.com/anjianshi/simple-config-reader',
     license='MIT',
     author='anjianshi',

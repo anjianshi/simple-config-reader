@@ -1,6 +1,6 @@
 {
   "name": "simple-config-reader",
-  "version": "0.0.3",
+  "version": "0.0.5",
   "description": "一个简单的配置文件读取工具",
   "main": "index.js",
   "files": [
