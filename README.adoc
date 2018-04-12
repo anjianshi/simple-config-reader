@@ -71,3 +71,7 @@ config = batch_read_config([
 print(config.a.b.c)
 print(config["a"]["b"]["c"])
 ----
+
+= 读取并合并多套配置文件
+此工具也支持读取多套配置文件（每套配置文件都由一个 defaults 文件和一个可选的 values 文件组成），并将它们的内容合并。
+合并时，对于名称相同的项目，若其是一个 dict，会对其递归合并；否则会报“名称重复”的错误。

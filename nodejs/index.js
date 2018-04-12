@@ -63,16 +63,26 @@ function batchReadConfig(groups) {
         }
         var currConfig = readConfig(defaultsPath, customValuesPath)
 
-        var duplicateKeys = _.intersection(
-            _.keys(mergedConfig), _.keys(currConfig)
-        )
-        if(duplicateKeys.length) {
-            throw Error('配置项重复出现：' + duplicateKeys.join(', '))
-        }
-
-        _.assign(mergedConfig, currConfig)
+        _deepMerge(mergedConfig, currConfig)
     }
     return mergedConfig
+}
+
+function _deepMerge(a, b, path) {
+    if(!path) path = []
+
+    _.forIn(b, function(value, key) {
+        var subPath = _.concat(path, key)
+        if(key in a) {
+            if(_.isPlainObject(a[key]) && _.isPlainObject(value)) {
+                _deepMerge(a[key], value, subPath)
+            } else {
+                throw Error('配置项冲突：' + subPath.join('.'))
+            }
+        } else {
+            a[key] = value
+        }
+    })
 }
 
 

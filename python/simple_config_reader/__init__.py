@@ -53,6 +53,12 @@ def read_config(defaults_path, custom_values_path=None):
 
 
 def batch_read_config(groups):
+    '''
+    groups: [
+        (default_path, custom_values_path),
+        default_path
+    ]
+    '''
     merged_config = {}
 
     for group in groups:
@@ -63,11 +69,19 @@ def batch_read_config(groups):
             defaults_path, custom_values_path = group
 
         current_config = read_config(defaults_path, custom_values_path)
-
-        duplicate_keys = set(merged_config) & set(current_config)
-        if duplicate_keys:
-            raise ReadConfigError("配置项重复出现：" + ", ".join(duplicate_keys))
-
-        merged_config.update(current_config)
+        _deep_merge(merged_config, current_config, [])
 
     return recursive_object_dict(merged_config)
+
+
+def _deep_merge(a, b, path):
+    for key, value in b.items():
+        sub_path = [*path, key]
+
+        if key in a:
+            if isinstance(a[key], dict) and isinstance(value, dict):
+                _deep_merge(a[key], value, sub_path)
+            else:
+                raise ReadConfigError("配置项冲突：" + '.'.join(sub_path))
+        else:
+            a[key] = value
